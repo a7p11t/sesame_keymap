@@ -21,6 +21,13 @@
 #define KL_RAISE 2
 #define KL_ADJUST 3
 
+enum custom_keycodes {
+    QWERTY = SAFE_RANGE,
+    LOWER,
+    RAISE,
+    ADJUST
+};
+
 // Define keycode alias
 #define ________ KC_TRNS
 #define A_IME LCTL(KC_SPC)
