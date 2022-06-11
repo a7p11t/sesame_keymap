@@ -24,6 +24,7 @@
 // Define keycode alias
 #define ________ KC_TRNS
 #define A_IME LCTL(KC_SPC)
+#define A_LOCK LGUI(KC_L)
 #define A_PSCR LGUI(KC_PSCR)
 #define MO_L MO(KL_LOWER)
 #define MO_R MO(KL_RAISE)
@@ -39,7 +40,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [KL_LOWER] = LAYOUT_alice(
         /**/ ________, KC_GRV  , KC_F1   , KC_F2   , KC_F3   , KC_F4   , KC_F5   , KC_F6   , KC_F7   , KC_F8   , KC_F9   , KC_F10  , KC_F11  , KC_F12  , KC_DEL  ,
         /**/ ________, ________, ________, ________, ________, ________, ________, ________, ________, ________, ________, ________, ________, ________, ________,
-        /**/ ________, ________, KC_HOME , KC_PGDN , KC_PGUP , KC_END  , ________, KC_LEFT , KC_DOWN , KC_UP   , KC_RGHT , ________, ________,           ________,
+        /**/ A_LOCK  , ________, KC_HOME , KC_PGDN , KC_PGUP , KC_END  , ________, KC_LEFT , KC_DOWN , KC_UP   , KC_RGHT , ________, ________,           ________,
         /**/           ________, ________, ________, ________, ________, A_IME   , KC_VOLD , KC_VOLU , KC_MUTE , KC_MPRV , KC_MNXT , KC_MPLY , ________, ________,
         /**/           ________,           ________, ________,           ________, ________,                     ________,                     ________
     ),
