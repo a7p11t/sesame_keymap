@@ -21,3 +21,6 @@ RGBLIGHT_ENABLE = no        # Enable keyboard RGB underglow
 AUDIO_ENABLE = no           # Audio output
 
 LAYOUTS = alice alice_split_bs
+
+# Project specific file
+SRC += a2j/translate_ansi_to_jis.c

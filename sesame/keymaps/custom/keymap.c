@@ -14,6 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include QMK_KEYBOARD_H
+#include "a2j/translate_ansi_to_jis.h"
 
 // Define layer name
 #define KL_QWERTY 0
@@ -119,5 +120,5 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
             break;
     }
-    return true;
+    return process_record_user_a2j(keycode, record);
 }
