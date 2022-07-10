@@ -45,7 +45,8 @@ enum custom_keycodes {
     RAISE,
     ADJUST,
     IME,
-    JIS
+    JIS,
+    ALTAB
 };
 
 // Define keycode alias
@@ -65,7 +66,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [KL_LOWER] = LAYOUT_alice(
         /**/ ________, KC_GRV  , KC_F1   , KC_F2   , KC_F3   , KC_F4   , KC_F5   , KC_F6   , KC_F7   , KC_F8   , KC_F9   , KC_F10  , KC_F11  , KC_F12  , KC_DEL  ,
         /**/ ________, ________, ________, ________, ________, ________, ________, ________, ________, ________, ________, ________, ________, ________, ________,
-        /**/ A_LOCK  , ________, KC_HOME , KC_PGDN , KC_PGUP , KC_END  , ________, KC_LEFT , KC_DOWN , KC_UP   , KC_RGHT , ________, ________,           ________,
+        /**/ A_LOCK  , ALTAB   , KC_HOME , KC_PGDN , KC_PGUP , KC_END  , ________, KC_LEFT , KC_DOWN , KC_UP   , KC_RGHT , ________, ________,           ________,
         /**/           ________, ________, ________, ________, ________, IME     , KC_VOLD , KC_VOLU , KC_MUTE , KC_MPRV , KC_MNXT , KC_MPLY , ________, ________,
         /**/           ________,           ________, ________,           ________, ________,                     ________,                     ________
     ),
@@ -87,6 +88,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 static bool lower_pressed = false;
 static bool raise_pressed = false;
+static bool altab_pressed = false;
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
@@ -100,6 +102,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             } else {
                 layer_off(KL_LOWER);
                 update_tri_layer(KL_LOWER, KL_RAISE, KL_ADJUST);
+
+                if(altab_pressed) {
+                    unregister_code(KC_LALT); 
+                }
+                altab_pressed = false; 
 
                 if(lower_pressed) {
                     register_code(KC_SPC);
@@ -146,6 +153,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 // reset the flag
                 lower_pressed = false;
                 raise_pressed = false;
+            }
+            break; 
+
+        case ALTAB:
+            if(record->event.pressed) {
+                altab_pressed = true;
+                register_code(KC_LALT);
+                tap_code(KC_TAB);
             }
             break;
 
