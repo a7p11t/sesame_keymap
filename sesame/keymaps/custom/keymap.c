@@ -22,12 +22,30 @@
 #define KL_RAISE 2
 #define KL_ADJUST 3
 
+typedef union {
+    uint32_t raw;
+    struct {
+        bool is_jis_mode: 1;
+    };
+} user_config_t;
+
+user_config_t user_config;
+
+void init_user_config(void) {
+    user_config.raw = eeconfig_read_user();
+}
+
+bool is_jis_mode(void) {
+    return user_config.is_jis_mode;
+}
+
 enum custom_keycodes {
     QWERTY = SAFE_RANGE,
     LOWER,
     RAISE,
     ADJUST,
-    IME
+    IME,
+    JIS
 };
 
 // Define keycode alias
@@ -59,7 +77,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         /**/           ________,           ________, ________,           ________, ________,                     ________,                     ________
     ),
     [KL_ADJUST] = LAYOUT_alice(
-        /**/ ________, ________, ________, ________, ________, ________, ________, ________, ________, ________, ________, ________, ________, ________, ________,
+        /**/ JIS     , ________, ________, ________, ________, ________, ________, ________, ________, ________, ________, ________, ________, ________, ________,
         /**/ ________, ________, ________, ________, ________, ________, ________, ________, ________, ________, ________, ________, ________, ________, ________,
         /**/ ________, ________, ________, ________, ________, ________, ________, ________, ________, ________, ________, ________, ________,           ________,
         /**/           ________, ________, ________, ________, ________, ________, ________, ________, ________, ________, ________, ________, ________, ________,
@@ -121,6 +139,16 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
             break;
 
+        case JIS:
+            if(record->event.pressed) {
+                user_config.is_jis_mode = !is_jis_mode();
+                eeconfig_update_user(user_config.raw);
+                // reset the flag
+                lower_pressed = false;
+                raise_pressed = false;
+            }
+            break;
+
         default:
             if(record->event.pressed) {
                 // reset the flag
@@ -129,5 +157,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
             break;
     }
+
+    if (!is_jis_mode()) {
+        return true;
+    }
     return process_record_user_a2j(keycode, record);
+}
+
+void keyboard_post_init_user(void) {
+    init_user_config();
 }
