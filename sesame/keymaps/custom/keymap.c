@@ -161,6 +161,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 altab_pressed = true;
                 register_code(KC_LALT);
                 tap_code(KC_TAB);
+                // reset the flag
+                lower_pressed = false;
+                raise_pressed = false;
             }
             break;
 
